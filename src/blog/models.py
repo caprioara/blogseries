@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 
 class Post(models.Model):
 
+    class NewManager(model.Manager):
+        def get_queryset(self):
+            return super().get_queryset().filter(status='published')
+
     options = (
     ('draft', 'Draft'),
     ('published', 'Published'),
@@ -15,7 +19,8 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
     content = models.TextField()
     status = models.CharField(max_length=10, choices=options, default='draft')
-
+    objects = models.Manager()
+    newmanager = NewManager()
     class Meta:
         ordering = ('-publish',)
 
