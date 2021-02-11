@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 class Post(models.Model):
 
@@ -21,6 +22,10 @@ class Post(models.Model):
     status = models.CharField(max_length=10, choices=options, default='draft')
     objects = models.Manager()
     newmanager = NewManager()
+
+    def get_absolute_url(self):
+        return reverse('blog:post_single', args=[self.slug])
+
     class Meta:
         ordering = ('-publish',)
 
