@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
-from .models import Post
+from .models import Post, Category
 from .forms import NewCommentForm
+from django.views.generic import ListView
 
 def home(request):
 
@@ -34,3 +35,23 @@ def post_single(request, post):
             'comment_form':comment_form
         },
     )
+
+
+class CatListView(ListView):
+    template_name = 'category.html'
+    context_object_name = 'catlist'
+
+    def get_queryset(self):
+        content = {
+            'cat' :self.kwargs['category'],
+            'posts': Post.objects.filter(category__name=self.kwargs['category']).filter(status='published')
+        }
+        return content
+
+
+def category_list(request):
+    category_list = Category.objects.exclude(name='Default')
+    context = {
+        'category_list': category_list,
+    }
+    return context
