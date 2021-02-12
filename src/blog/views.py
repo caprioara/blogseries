@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from .models import Post, Category
 from .forms import NewCommentForm
 from django.views.generic import ListView
+# from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def home(request):
 
@@ -13,6 +14,8 @@ def post_single(request, post):
 
     post = get_object_or_404(Post, slug=post, status='published')
     comments = post.comments.filter(status=True)
+    
+
     user_comment = None
 
     if request.method == 'POST':
