@@ -9,7 +9,6 @@ class AuthorAdmin(admin.ModelAdmin):
         "slug": ("title",), }
 
 admin.site.register(models.Category)
-
 admin.site.register(models.Comment, MPTTModelAdmin)
 
 # @admin.register(models.Comment)
