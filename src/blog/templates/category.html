@@ -13,7 +13,7 @@ Catlist
                 <div class="col-md-4">
                     <a href="{{post.get_absolute_url}}" class="text-dark">
                         <div class="card mb-4 box-shadow">
-                            <img src="https://picsum.photos/200/100" alt="" class="card-img-top">
+                            <img src="{{post.image.url}}" alt="" class="card-img-top">
                             <div class="card-body">
                                 <h2 style="font-size:18px; font-weight:bold;">{{ post.title | truncatechars:50}}</h2>
                                 <p class="card-text">{{ post.excerpt | truncatechars:50}}</p>
