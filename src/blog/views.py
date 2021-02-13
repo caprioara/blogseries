@@ -3,6 +3,7 @@ from .models import Post, Category
 from .forms import NewCommentForm, PostSearchForm
 from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 
 def home(request):
@@ -73,20 +74,26 @@ def category_list(request):
 def post_search(request):
     form = PostSearchForm()
     q = ''
-    result = []
+    c = ''
+    results = []
+    query = Q()
 
     if 'q' in request.GET:
         form = PostSearchForm(request.GET)
         if form.is_valid():
             q = form.cleaned_data['q']
-            results = Post.objects.filter(title__contains=q)
+            c = form.cleaned_data['c']
+
+            if c is not None:
+                query &= Q(category=c)
+            if q is not None:
+                query &= Q(title__contains=q)
+
+            results = Post.objects.filter(query)
+
+            results = Post.objects.filter(query)
             
-    return render(
-        request, 
-        'search.html', 
-        {
-            'form': form,
-            'q':q,
-            'results':results
-        }
-    )
+    return render(request, 'search.html',
+                  {'form': form,
+                   'q': q,
+                   'results': results})

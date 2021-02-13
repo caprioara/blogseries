@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment
+from .models import Comment, Category
 from mptt.forms import TreeNodeChoiceField
 
 class NewCommentForm(forms.ModelForm):
@@ -27,3 +27,20 @@ class NewCommentForm(forms.ModelForm):
 
 class PostSearchForm(forms.Form):
     q = forms.CharField()
+    c = forms.ModelChoiceField(
+        queryset=Category.objects.all().order_by('name'))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['c'].required = False
+
+
+
+
+    # FRUIT_CHOICES = [
+    #     ('orange', 'Oranges'),
+    #     ('cataloupe', 'Cantaloupes'),
+    #     ('mango', 'Mangos'),
+    #     ('honeydre', 'Honeydews'),
+    # ]
+    # d = forms.CharField(label='what is your fav fruit?', widget=forms.Select(choices=FRUIT_CHOICES))
