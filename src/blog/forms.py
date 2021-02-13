@@ -20,3 +20,10 @@ class NewCommentForm(forms.ModelForm):
             'email': forms.TextInput(attrs={'class':'col-sm-12'}),
             'content': forms.Textarea(attrs={'class':'col-sm-12'}),
         }
+
+    def save(self, *args, **kwargs):
+        Comment.objects.rebuild()
+        return super(NewCommentForm, self).save(*args, **kwargs)
+
+class PostSearchForm(forms.Form):
+    q = forms.CharField()
