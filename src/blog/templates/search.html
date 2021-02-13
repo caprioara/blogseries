@@ -5,7 +5,7 @@ Search
 {% endblock %}
 
 {% block content %}
-
+<div class="container pt-5">
 {% if q %}
 <h1>Post containing "{{ q }}"</h1>
 <p>
@@ -47,5 +47,5 @@ Search
     <input type="submit" class="btn btn-primary mt-1" value="Search">
 </form>
 {% endif %}
-
+</div>
 {% endblock %}

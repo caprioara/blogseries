@@ -32,7 +32,13 @@ class PostSearchForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # self.fields['c'].label = ''
         self.fields['c'].required = False
+        self.fields['c'].label = 'Category'
+        self.fields['q'].label = 'Search For'
+        self.fields['q'].widget.attrs.update({'class': 'form-control'})
+
+
 
 
 
