@@ -5,6 +5,8 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('account/', include('accounts.urls', namespace='accounts')),
+    path('account/', include('django.contrib.auth.urls')),
     path('', include('blog.urls', namespace='blog')),
 ]
 
