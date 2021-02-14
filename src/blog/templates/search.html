@@ -63,8 +63,10 @@ Search
     $(document).on('keyup','#id_q', function (e) {
         e.preventDefault();
 
+        var minlength = 3;
         var results = [];
 
+        if ($('#id_q').val().length >= minlength) {
         $.ajax({
                 type: 'POST',
                 url: '{% url "blog:post_search" %}',
@@ -80,11 +82,16 @@ Search
                             '">' + item.fields.title +
                             '</a></li>')
                     })
+
+                    if(!$('.show')[0]) {
+                        $('.menudd').trigger('click')
+                    }
                     
-                    document.getElementById('list').innerHTML = results.join('');
+                    document.getElementById("list").innerHTML = (!results.length) ?
+                        "No results match your query" : results.join('');
                 },
                 error: function(xhr, errmsg, err) {}
-            });
+            });}
     })
 </script>
 
