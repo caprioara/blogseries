@@ -1,7 +1,21 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm # (rescrie unele parti din code ale lui django)
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm # (rescrie unele parti din code ale lui django)
 from django.core.exceptions import ValidationError
+
+# forms - https://docs.djangoproject.com/en/1.8/_modules/django/contrib/auth/forms/
+
+class PwdResetForm(PasswordResetForm):
+    email = forms.EmailField(max_length=254, widget=forms.TextInput(
+        attrs={'class': 'form-control mb-3', 'placeholder': 'Email', 'id': 'form-email'}))
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        test = User.objects.filter(email=email)
+        if not test:
+            raise forms.ValidationError('Unfortunetley we can not find that email address')
+        return email
+
 
 class UserLoginForm(AuthenticationForm):
 
@@ -14,6 +28,7 @@ class UserLoginForm(AuthenticationForm):
             'id': 'login-pwd',
         }
     ))
+
 
 class RegistrationForm(forms.ModelForm):
     username = forms.CharField(label='Enter Username', min_length=4, max_length=50, help_text='Required')
