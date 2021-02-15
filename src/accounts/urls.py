@@ -10,5 +10,5 @@ urlpatterns = [
                                                 authentication_form=UserLoginForm), name='login'),
     path('profile/', views.profile, name='profile'),
     path('register/', views.accounts_register, name='register'),
-    # path('activate/<slug:uidb64>/<slug:token>/', views.activate, name='activate')
+    path('activate/<slug:uidb64>/<slug:token>/', views.activate, name='activate'),
 ] 
