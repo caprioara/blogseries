@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import Profile
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 # (rescrie unele parti din code ale lui django)
 from django.core.exceptions import ValidationError
@@ -107,20 +108,31 @@ class UserEditForm(forms.ModelForm):
 
     email = forms.EmailField(
         max_length=200, widget=forms.TextInput(
-            attrs={'class': 'form-control mb-3', 'placeholder': 'Old Password', 'id': 'form-email'}))
+            attrs={'class': 'form-control mb-3', 'placeholder': 'Old Email', 'id': 'form-email'}))
 
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
 
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError(
-                'Please use another Email, that is already taken')
-        return email
+    # def clean_email(self):
+    #     email = self.cleaned_data['email']
+    #     if User.objects.filter(email=email).exists():
+    #         raise forms.ValidationError(
+    #             'Please use another Email, that is already taken')
+    #     return email
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['last_name'].required = False
-        self.fields['first_name'].required = False
+        self.fields['email'].required = False
+        
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['bio', 'avatar']
+
+        widgets = {
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': '5'}),
+
+        }

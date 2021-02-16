@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'blog.views.category_list',
+                'accounts.views.avatar',
             ],
         },
     },
@@ -92,13 +93,13 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-        'OPTIONS': {
-            'user_attributes': (
-                'username', 'email', 'first_name', 'last_name'
-            ),
-            'max_similatrity': 1
-            # 'max_similatrity': 0 - cannt change the password
-        },
+        # 'OPTIONS': {
+        #     'user_attributes': (
+        #         'username', 'email', 'first_name', 'last_name'
+        #     ),
+        #     'max_similatrity': 1
+        #     # 'max_similatrity': 0 - cannt change the password
+        # },
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
