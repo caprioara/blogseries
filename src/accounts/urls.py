@@ -14,7 +14,7 @@ urlpatterns = [
             template_name="registration/password_change_form.html",
             form_class=PwdChangeForm), 
         name='pwdforgot'),
-        
+
     path(
         'login/',
         auth_views.LoginView.as_view(
@@ -42,6 +42,7 @@ urlpatterns = [
 
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.edit, name='edit'),
+    path('profile/delete/', views.delete_user, name='deleteuser'),
     path('register/', views.accounts_register, name='register'),
     path('activate/<slug:uidb64>/<slug:token>/', views.activate, name='activate'),
 ] 

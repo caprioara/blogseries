@@ -13,6 +13,17 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 
 @login_required
+def delete_user(request):
+
+    if request.method == 'POST':
+        user = User.objects.get(username=request.user)
+        user.is_active = False
+        user.save()
+        return redirect('login')
+        
+    return render(request, 'accounts/delete.html')
+
+@login_required
 def edit(request):
     if request.method == 'POST':
         user_form = UserEditForm(instance=request.user, data=request.POST)
