@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import RegistrationForm
+from .forms import RegistrationForm, UserEditForm
 from django.http import HttpResponse
 
 from django.contrib.sites.shortcuts import get_current_site
@@ -11,6 +11,16 @@ from .tokens import account_activation_token
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+
+@login_required
+def edit(request):
+    if request.method == 'POST':
+        user_form = UserEditForm(instance=request.user, data=request.POST)
+        if user_form.is_valid():
+            user_form.save()
+    else: # we shod the form 
+        user_form = UserEditForm(instance=request.user)
+    return render(request, 'accounts/update.html', {'user_form': user_form})
 
 @login_required
 def profile(request):

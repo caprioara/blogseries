@@ -1,9 +1,17 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm # (rescrie unele parti din code ale lui django)
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
+# (rescrie unele parti din code ale lui django)
 from django.core.exceptions import ValidationError
 
 # forms - https://docs.djangoproject.com/en/1.8/_modules/django/contrib/auth/forms/
+
+class PwdResetConfirmForm(SetPasswordForm):
+    new_password1 = forms.CharField(label='New password', widget=forms.PasswordInput(
+        attrs={'class':'form-control mb-3', 'placeholder': 'New Password', 'id': 'form-newpass'}))
+    new_password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput(
+        attrs={'class':'form-control mb-3', 'placeholder': 'New Password', 'id': 'form-newpass'}))
+
 
 class PwdResetForm(PasswordResetForm):
     email = forms.EmailField(max_length=254, widget=forms.TextInput(
@@ -74,3 +82,33 @@ class RegistrationForm(forms.ModelForm):
         self.fields['password2'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Repeat Password'}
         )
+
+
+class UserEditForm(forms.ModelForm):
+    first_name = forms.CharField(
+        label='Firstname', min_length=4, max_length=50, widget=forms.TextInput(
+            attrs={'class': 'form-control mb-3', 'placeholder': 'Firstname', 'id': 'form-firstname'}))
+
+    last_name = forms.CharField(
+        label='Lastname', min_length=4, max_length=50, widget=forms.TextInput(
+            attrs={'class': 'form-control mb-3', 'placeholder': 'Lastname', 'id': 'form-lastname'}))
+
+    email = forms.EmailField(
+        max_length=200, widget=forms.TextInput(
+            attrs={'class': 'form-control mb-3', 'placeholder': 'Old Password', 'id': 'form-email'}))
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError(
+                'Please use another Email, that is already taken')
+        return email
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['last_name'].required = False
+        self.fields['first_name'].required = False

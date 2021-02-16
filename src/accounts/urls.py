@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
-from .forms import UserLoginForm, PwdResetForm
+from .forms import UserLoginForm, PwdResetForm, PwdResetConfirmForm
 
 # urls - https://github.com/django/django/blob/master/django/contrib/auth/urls.py
 
@@ -23,7 +23,18 @@ urlpatterns = [
             form_class=PwdResetForm
         ),
         name='pwdreset'),
+
+    path(
+        'password_reset_confirm/<uidb64>/<token>', 
+        auth_views.PasswordResetConfirmView.as_view(
+            # success_url='/account/login/',
+            template_name='registration/password_reset_confirm.html', 
+            form_class=PwdResetConfirmForm
+            ), 
+        name='pwdresetconfirm'),
+
     path('profile/', views.profile, name='profile'),
+    path('profile/edit/', views.edit, name='edit'),
     path('register/', views.accounts_register, name='register'),
     path('activate/<slug:uidb64>/<slug:token>/', views.activate, name='activate'),
 ] 
