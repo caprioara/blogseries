@@ -14,6 +14,15 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 
 @login_required
+def avatar(request):
+    user = User.objects.get(username=request.user)
+    avatar = Profile.objects.filter(user=user)
+    context = {
+        'avatar': avatar,
+    }
+    return context
+
+@login_required
 def delete_user(request):
 
     if request.method == 'POST':
