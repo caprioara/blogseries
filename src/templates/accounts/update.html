@@ -21,7 +21,7 @@
 
                 <form class="form-reset p-4 rounded update-form" method="post" enctype="multipart/form-data">
 
-                    {% if user_form.is_valid %}
+                    {% if user_form.is_valid and profile_form.is_valid %}
                     <div class="alert alert-primary" role="alert">
                         Details successfully updated!
                     </div>
@@ -36,6 +36,12 @@
                     {% if form.errors %}
                     <div class="alert alert-primary" role="alert">
                         Error: Please try again!
+                    </div>
+                    {% endif %}
+
+                    {% if profile_form.errors %}
+                    <div class="alert alert-primary" role="alert">
+                        Error: Filesize incorrect - has to be 200px bt 200px!
                     </div>
                     {% endif %}
 
